@@ -20,7 +20,7 @@ func _load_models():
 	
 	var output = []
 	var command = "cd " + rails_project_path + " && ls app/models/*.rb"
-	var exit_code = OS.execute("bash", ["-c", command], output, true)
+	var exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
 	
 	if exit_code == 0:
 		if !output.is_empty():
@@ -62,11 +62,11 @@ func _on_ButtonSaveNewType_pressed():
 	if type_name.is_empty():
 		return
 
-	var command = "cd " + rails_project_path + " && rails generate scaffold " + type_name + ""
+	var command = "cd " + rails_project_path + " && rails generate scaffold " + type_name + " title:string"
 	print("command: ", command)
 	
 	var output = []
-	var exit_code = OS.execute("bash", ["-c", command], output, true)
+	var exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
 	if exit_code == 0:
 		line_edit_new_type.text = ""
 		_load_models()
