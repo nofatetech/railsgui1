@@ -41,6 +41,10 @@ text = "Controllers"
 layout_mode = 2
 text = "Views"
 
+[node name="SettingsButton" type="Button" parent="VBoxContainer/MenuContainer/HBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
 [node name="ModelsContainer" type="HSplitContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -141,7 +145,39 @@ layout_mode = 2
 [node name="ViewContent" type="PanelContainer" parent="VBoxContainer/ViewsContainer"]
 layout_mode = 2
 
+[node name="SettingsContainer" type="PanelContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/SettingsContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/SettingsContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/SettingsContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/SettingsContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Rails Project Path"
+
+[node name="LineEditProjectPath" type="LineEdit" parent="VBoxContainer/SettingsContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonSaveSettings" type="Button" parent="VBoxContainer/SettingsContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Save"
+
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ModelsButton" to="." method="_on_ModelsButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ControllersButton" to="." method="_on_ControllersButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ViewsButton" to="." method="_on_ViewsButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/NewDataTypeForm/ButtonSaveNewType" to="." method="_on_ButtonSaveNewType_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsContainer/VBoxContainer/HBoxContainer/ButtonSaveSettings" to="." method="_on_ButtonSaveSettings_pressed"]
