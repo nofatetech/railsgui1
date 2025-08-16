@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://0v280c0s2gur"]
 
-[ext_resource type="Script" path="res://Main.gd" id="1_wexf7"]
+[ext_resource type="Script" uid="uid://cse253a8k675h" path="res://Main.gd" id="1_wexf7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c17e6"]
 bg_color = Color(0.1, 0.1, 0.1, 1)
@@ -58,13 +58,9 @@ layout_mode = 2
 text = "Data Types"
 horizontal_alignment = 1
 
-[node name="ItemList" type="ItemList" parent="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer"]
+[node name="ModelList" type="ItemList" parent="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-item_count = 3
-item_0/text = "Users"
-item_1/text = "Products"
-item_2/text = "Orders"
 
 [node name="NewDataTypeForm" type="VBoxContainer" parent="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer"]
 layout_mode = 2
@@ -75,11 +71,11 @@ layout_mode = 2
 text = "New Data Type"
 horizontal_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/NewDataTypeForm"]
+[node name="LineEditNewType" type="LineEdit" parent="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/NewDataTypeForm"]
 layout_mode = 2
 placeholder_text = "Enter name"
 
-[node name="Button" type="Button" parent="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/NewDataTypeForm"]
+[node name="ButtonSaveNewType" type="Button" parent="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/NewDataTypeForm"]
 layout_mode = 2
 text = "Save"
 
@@ -148,3 +144,4 @@ layout_mode = 2
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ModelsButton" to="." method="_on_ModelsButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ControllersButton" to="." method="_on_ControllersButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ViewsButton" to="." method="_on_ViewsButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/NewDataTypeForm/ButtonSaveNewType" to="." method="_on_ButtonSaveNewType_pressed"]
