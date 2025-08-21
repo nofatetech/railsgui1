@@ -15,6 +15,7 @@ extends Control
 
 var rails_project_path = ""
 var settings_file = "user://settings.cfg"
+var models_data = []
 
 func _ready():
 	models_container.show()
@@ -53,25 +54,31 @@ func _save_settings():
 func _load_models():
 	model_list.clear()
 	option_button_new_field_reference.clear()
-	
+	models_data.clear()
+
 	if rails_project_path.is_empty():
 		return
 
 	var output = []
-	var command = "cd " + rails_project_path + " && ls app/models/*.rb"
+	var command = "cd " + rails_project_path + " && bundle exec bin/x_analyze_rails.rb"
 	var exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
-	
+
 	if exit_code == 0:
 		if !output.is_empty():
-			var all_lines = output[0].split("\n")
-			for line in all_lines:
-				if !line.is_empty():
-					var file_path = line.strip_edges()
-					var file_name = file_path.get_file()
-					var model_name = file_name.get_basename()
-					if model_name != "application_record":
-						model_list.add_item(model_name.capitalize())
-						option_button_new_field_reference.add_item(model_name.capitalize())
+			var json_string = output[0]
+			var json = JSON.new()
+			var error = json.parse(json_string)
+			if error == OK:
+				var models = json.get_data()
+				if models is Array:
+					models_data = models
+					for model in models:
+						if model is Dictionary and model.has("model_name"):
+							var model_name = model["model_name"]
+							model_list.add_item(model_name)
+							option_button_new_field_reference.add_item(model_name)
+			else:
+				print("Error parsing JSON: " + json.get_error_message() + " in " + json_string)
 	else:
 		print("Error loading models: " + str(exit_code))
 		for line in output:
@@ -122,24 +129,35 @@ func _on_ModelList_item_selected(index):
 	selected_model_label.text = model_name
 	_clear_fields()
 
-	var output = []
-	#var command = "cd " + rails_project_path + " && rails runner 'puts " + model_name + ".column_names.join(\"\\n\")'"
-	var command = "cd " + rails_project_path + " && rails runner 'puts model9.column_names.join(\"\\n\")'"
-	var exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
-	print("LOADING FIELDS: ",command)
+	var selected_model_data = null
+	for model in models_data:
+		if model is Dictionary and model.has("model_name") and model["model_name"] == model_name:
+			selected_model_data = model
+			break
 
-	if exit_code == 0:
-		if !output.is_empty():
-			var all_lines = output[0].split("\n")
-			for line in all_lines:
-				if !line.is_empty():
+	if selected_model_data and selected_model_data.has("attributes"):
+		var attributes = selected_model_data["attributes"]
+		if attributes is Array:
+			for attribute in attributes:
+				if attribute is Dictionary and attribute.has("name") and attribute.has("type"):
 					var field_label = Label.new()
-					field_label.text = line.strip_edges()
+					field_label.text = attribute["name"]
 					fields_grid_container.add_child(field_label)
-	else:
-		print("Error loading model fields: " + str(exit_code))
-		for line in output:
-			print(line)
+					var type_label = Label.new()
+					type_label.text = attribute["type"]
+					fields_grid_container.add_child(type_label)
+
+	if selected_model_data and selected_model_data.has("associations"):
+		var associations = selected_model_data["associations"]
+		if associations is Array:
+			for association in associations:
+				if association is Dictionary and association.has("macro") and association.has("name"):
+					var association_label = Label.new()
+					association_label.text = association["macro"] + ": " + association["name"]
+					fields_grid_container.add_child(association_label)
+					var empty_label = Label.new()
+					empty_label.text = ""
+					fields_grid_container.add_child(empty_label)
 
 
 func _on_ButtonSaveNewType_pressed():
