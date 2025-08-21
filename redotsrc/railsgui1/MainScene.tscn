@@ -89,38 +89,32 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ModelsContainer/Editor"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer"]
+[node name="SelectedModelLabel" type="Label" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer"]
 layout_mode = 2
 text = "Details"
 horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer"]
+[node name="FieldsGridContainer" type="GridContainer" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/GridContainer"]
+[node name="AddFieldHBoxContainer" type="HBoxContainer" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer"]
 layout_mode = 2
-text = "ID"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/GridContainer"]
+[node name="LineEditNewFieldName" type="LineEdit" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/AddFieldHBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+placeholder_text = "Field Name"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/GridContainer"]
+[node name="OptionButtonNewFieldType" type="OptionButton" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/AddFieldHBoxContainer"]
 layout_mode = 2
-text = "Name"
 
-[node name="LineEdit2" type="LineEdit" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/GridContainer"]
+[node name="OptionButtonNewFieldReference" type="OptionButton" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/AddFieldHBoxContainer"]
+visible = false
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Label3" type="Label" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/GridContainer"]
+[node name="ButtonAddNewField" type="Button" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/AddFieldHBoxContainer"]
 layout_mode = 2
-text = "Email"
-
-[node name="LineEdit3" type="LineEdit" parent="VBoxContainer/ModelsContainer/Editor/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
+text = "Add Field"
 
 [node name="ControllersContainer" type="PanelContainer" parent="VBoxContainer"]
 visible = false
@@ -179,5 +173,7 @@ text = "Save"
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ControllersButton" to="." method="_on_ControllersButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/ViewsButton" to="." method="_on_ViewsButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/HBoxContainer/SettingsButton" to="." method="_on_SettingsButton_pressed"]
+[connection signal="item_selected" from="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/ModelList" to="." method="_on_ModelList_item_selected"]
 [connection signal="pressed" from="VBoxContainer/ModelsContainer/Sidebar/VBoxContainer/NewDataTypeForm/ButtonSaveNewType" to="." method="_on_ButtonSaveNewType_pressed"]
+[connection signal="pressed" from="VBoxContainer/ModelsContainer/Editor/VBoxContainer/AddFieldHBoxContainer/ButtonAddNewField" to="." method="_on_ButtonAddNewField_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsContainer/VBoxContainer/HBoxContainer/ButtonSaveSettings" to="." method="_on_ButtonSaveSettings_pressed"]
