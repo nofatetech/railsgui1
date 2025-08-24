@@ -61,11 +61,11 @@ func _load_models():
 		return
 
 	var output = []
-	var command = "cp ../../railsfiles/bin/x_analyze_rails.rb " + rails_project_path + "/bin/"
+	var command = "cp ../../railsfiles/bin/xgui_*.rb " + rails_project_path + "/bin/"
 	var exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
 
 	output = []
-	command = "cd " + rails_project_path + " && bundle exec bin/x_analyze_rails.rb"
+	command = "cd " + rails_project_path + " && bundle exec bin/xgui_analyze_models.rb"
 	exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
 
 	if exit_code == 0:
