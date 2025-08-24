@@ -52,6 +52,7 @@ func _save_settings():
 
 
 func _load_models():
+	print("-- LOAD MODELS")
 	model_list.clear()
 	option_button_new_field_reference.clear()
 	models_data.clear()
@@ -60,8 +61,12 @@ func _load_models():
 		return
 
 	var output = []
-	var command = "cd " + rails_project_path + " && bundle exec bin/x_analyze_rails.rb"
+	var command = "cp ../../railsfiles/bin/x_analyze_rails.rb " + rails_project_path + "/bin/"
 	var exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
+
+	output = []
+	command = "cd " + rails_project_path + " && bundle exec bin/x_analyze_rails.rb"
+	exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
 
 	if exit_code == 0:
 		if !output.is_empty():
@@ -179,6 +184,7 @@ func _on_ButtonSaveNewType_pressed():
 
 
 func _on_NewFieldType_item_selected(index):
+	print("_on_NewFieldType_item_selected")
 	var type = option_button_new_field_type.get_item_text(index)
 	if type == "references" or type == "has_many":
 		option_button_new_field_reference.show()
@@ -187,10 +193,12 @@ func _on_NewFieldType_item_selected(index):
 
 
 func _on_ButtonAddNewField_pressed():
+	print("_on_ButtonAddNewField_pressed")
 	var selected_index = model_list.get_selected_items()[0]
 	var model_a_name = model_list.get_item_text(selected_index)
 	
 	var field_name = line_edit_new_field_name.text
+	#print("_on_ButtonAddNewField_pressed 002 ", field_name)
 	if field_name.is_empty():
 		return
 
@@ -259,7 +267,9 @@ func _on_ButtonAddNewField_pressed():
 			var referenced_model = option_button_new_field_reference.get_item_text(option_button_new_field_reference.selected)
 			full_field_type = referenced_model.to_lower() + ":references"
 
-		var command = "cd " + rails_project_path + " && rails generate migration Add" + field_name.capitalize() + "To" + model_a_name + " " + field_name + ":" + full_field_type
+		#var command = "cd " + rails_project_path + " && rails generate migration Add" + field_name.capitalize() + "To" + model_a_name + " " + field_name + ":" + full_field_type
+		var command = "cd " + rails_project_path + " && rails generate migration Add" + field_name.capitalize().replace(" ", "") + "To" + model_a_name + " " + field_name + ":" + full_field_type + " && rails db:migrate"
+		print("_on_ButtonAddNewField_pressed command: ", command)
 		
 		var output = []
 		var exit_code = OS.execute("bash", ["-l", "-c", command], output, true)
@@ -270,3 +280,6 @@ func _on_ButtonAddNewField_pressed():
 			print("Error adding field: " + str(exit_code))
 			for line in output:
 				print(line)
+
+	_load_models()
+	
